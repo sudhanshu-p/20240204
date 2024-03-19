@@ -507,6 +507,7 @@ class ArrayNums {
 			outputArray.push(inputNumber % 10)
 			inputNumber = Math.floor(inputNumber / 10)
 		}
+		if(outputArray.length === 0) return [0]
 		return outputArray.reverse()
 	}
 
@@ -519,20 +520,22 @@ class ArrayNums {
 		// console.log(ArrayNums.divide([8, 1, 0, 4, 8, 4, 7, 1, 6, 1],
 		// 	[9, 1, 8, 2]))
 
-		for (let i = 0; i < 100; i++) {
-			let inputOne = 1 + Math.floor(Math.random() * 1000)
-			let inputTwo = 1 + Math.floor(Math.random() * 100)
-			// console.log(`For input ${inputOne}, -> 
-			// 	${ArrayNums.convertIntegerToArrayNum(inputOne)}`)
-			let output = ArrayNums.divide(
-				ArrayNums.convertIntegerToArrayNum(inputOne),
-				ArrayNums.convertIntegerToArrayNum(inputTwo))
-			console.log("For Inputs: inputOne = " + inputOne +
-				" And inputTwo = " + inputTwo + " -> Quotient = "
-				+ output["Quotient"].join("") + " And Remainder = "
-				+ output["Remainder"].join("")
-			)
-		}
+		// for (let i = 0; i < 100; i++) {
+		// 	let inputOne = 1 + Math.floor(Math.random() * 1000)
+		// 	let inputTwo = 1 + Math.floor(Math.random() * 100)
+		// 	// console.log(`For input ${inputOne}, -> 
+		// 	// 	${ArrayNums.convertIntegerToArrayNum(inputOne)}`)
+		// 	let output = ArrayNums.divide(
+		// 		ArrayNums.convertIntegerToArrayNum(inputOne),
+		// 		ArrayNums.convertIntegerToArrayNum(inputTwo))
+		// 	console.log("For Inputs: inputOne = " + inputOne +
+		// 		" And inputTwo = " + inputTwo + " -> Quotient = "
+		// 		+ output["Quotient"].join("") + " And Remainder = "
+		// 		+ output["Remainder"].join("")
+		// 	)
+		// }
+
+		console.log(ArrayNums.convertIntegerToArrayNum(0))
 
 	}
 }
