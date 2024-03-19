@@ -20,6 +20,12 @@ describe('ArrayNums', () => {
             const result = ArrayNums.__verifyInputData([0, 0, 1, 2, 3]);
             expect(result).toBe(true);
         });
+
+        it('should not modify the input array if it is valid', () => {
+            const inputArray = [1, 2, 3];
+            ArrayNums.__verifyInputData(inputArray);
+            expect(inputArray).toEqual([1, 2, 3]);
+        });
     });
 
     describe('__simpleSubtract', () => {
@@ -32,6 +38,16 @@ describe('ArrayNums', () => {
             const result = ArrayNums.__simpleSubtract([1, 0, 0], [5, 0]);
             expect(result).toEqual([5, 0]);
         });
+
+        it('should handle cases where the smaller number has leading zeros', () => {
+            const result = ArrayNums.__simpleSubtract([5, 2, 0], [0, 2, 1, 2]);
+            expect(result).toEqual([3, 0, 8]);
+        });
+
+        it('should handle cases where the bigger number has leading zeros', () => {
+            const result = ArrayNums.__simpleSubtract([0, 5, 2, 0], [2, 1, 2]);
+            expect(result).toEqual([3, 0, 8]);
+        });
     });
 
     describe('__oneDigitMultiply', () => {
@@ -43,6 +59,16 @@ describe('ArrayNums', () => {
         it('should handle carry correctly', () => {
             const result = ArrayNums.__oneDigitMultiply([9, 9, 9], 3);
             expect(result).toEqual([2, 9, 9, 7]);
+        });
+
+        it('should handle multiplication by zero correctly', () => {
+            const result = ArrayNums.__oneDigitMultiply([9, 1, 8, 2], 0);
+            expect(result).toEqual([0]);
+        });
+
+        it('should handle multiplication by one correctly', () => {
+            const result = ArrayNums.__oneDigitMultiply([9, 1, 8, 2], 1);
+            expect(result).toEqual([9, 1, 8, 2]);
         });
     });
 
@@ -61,12 +87,32 @@ describe('ArrayNums', () => {
             const result = ArrayNums.__addAll([[1, 2], [3, 4], [5, 6]]);
             expect(result).toEqual([1, 0, 2]);
         });
+
+        it('should handle arrays with different lengths correctly', () => {
+            const result = ArrayNums.__addAll([[1, 2], [3], [4, 5, 6]]);
+            expect(result).toEqual([4, 7, 1]);
+        });
+
+        it('should handle arrays with leading zeros correctly', () => {
+            const result = ArrayNums.__addAll([[0, 1, 2], [0, 3, 4], [5, 6]]);
+            expect(result).toEqual([1, 0, 2]);
+        });
     });
 
     describe('__checkMaxMultiple', () => {
         it('should return the maximum multiple and remainder correctly', () => {
             const result = ArrayNums.__checkMaxMultiple([9, 8], [2, 3]);
             expect(result).toEqual([4, [6]]);
+        });
+
+        it('should handle cases where the divident is smaller than the divisor', () => {
+            const result = ArrayNums.__checkMaxMultiple([1, 2], [3, 4]);
+            expect(result).toEqual([0, [1, 2]]);
+        });
+
+        it('should handle cases where the divident is equal to the divisor', () => {
+            const result = ArrayNums.__checkMaxMultiple([3, 4], [3, 4]);
+            expect(result).toEqual([1, [0]]);
         });
     });
 
@@ -85,6 +131,16 @@ describe('ArrayNums', () => {
             const result = ArrayNums.__getBiggerOfTwoNumArrays([7, 6], [7, 6]);
             expect(result).toBe(0);
         });
+
+        it('should handle cases where both numbers have leading zeros', () => {
+            const result = ArrayNums.__getBiggerOfTwoNumArrays([0, 0, 7, 6], [0, 0, 9, 8]);
+            expect(result).toBe(-1);
+        });
+
+        it('should handle cases where one number has leading zeros', () => {
+            const result = ArrayNums.__getBiggerOfTwoNumArrays([0, 0, 9, 8], [7, 6]);
+            expect(result).toBe(1);
+        });
     });
 
     describe('convertIntegerToArrayNum', () => {
@@ -96,6 +152,15 @@ describe('ArrayNums', () => {
         it('should handle zero correctly', () => {
             const result = ArrayNums.convertIntegerToArrayNum(0);
             expect(result).toEqual([0]);
+        });
+
+        it('should handle large integers correctly', () => {
+            const result = ArrayNums.convertIntegerToArrayNum(987654321);
+            expect(result).toEqual([9, 8, 7, 6, 5, 4, 3, 2, 1]);
+        });
+
+        it('should handle negative integers correctly', () => {
+            expect(() => ArrayNums.convertIntegerToArrayNum(-123)).toThrowError(RangeError);
         });
     });
 
@@ -113,6 +178,11 @@ describe('ArrayNums', () => {
         it('should throw an error for invalid input', () => {
             expect(() => ArrayNums.addition([1, 2, 'a'], [3, 4])).toThrowError(TypeError);
             expect(() => ArrayNums.addition([1, 2, -1], [3, 4])).toThrowError(RangeError);
+        });
+
+        it('should handle addition of large numbers correctly', () => {
+            const result = ArrayNums.addition([9, 9, 9, 9, 9, 9, 9, 9, 9], [1, 0, 0, 0, 0, 0, 0, 0, 0]);
+            expect(result).toEqual([1, 0, 9, 9, 9, 9, 9, 9, 9, 9]);
         });
     });
 
@@ -136,6 +206,11 @@ describe('ArrayNums', () => {
             expect(() => ArrayNums.subtract([1, 2, 'a'], [3, 4])).toThrowError(TypeError);
             expect(() => ArrayNums.subtract([1, 2, -1], [3, 4])).toThrowError(RangeError);
         });
+
+        it('should handle subtraction of large numbers correctly', () => {
+            const result = ArrayNums.subtract([9, 9, 9, 9, 9, 9, 9, 9, 9], [1, 0, 0, 0, 0, 0, 0, 0, 0]);
+            expect(result).toEqual([8, 9, 9, 9, 9, 9, 9, 9, 9]);
+        });
     });
 
     describe('multiply', () => {
@@ -152,6 +227,11 @@ describe('ArrayNums', () => {
         it('should throw an error for invalid input', () => {
             expect(() => ArrayNums.multiply([1, 2, 'a'], [3, 4])).toThrowError(TypeError);
             expect(() => ArrayNums.multiply([1, 2, -1], [3, 4])).toThrowError(RangeError);
+        });
+
+        it('should handle multiplication of large numbers correctly', () => {
+            const result = ArrayNums.multiply([9, 9, 9, 9, 9, 9, 9, 9, 9], [9, 9, 9, 9, 9, 9, 9, 9, 9]);
+            expect(result).toEqual([9, 9, 9, 9, 9, 9, 9, 9, 8, 0, 0, 0, 0, 0, 0, 0, 0, 1]);
         });
     });
 
@@ -178,6 +258,21 @@ describe('ArrayNums', () => {
         it('should throw an error for invalid input', () => {
             expect(() => ArrayNums.divide([1, 2, 'a'], [3, 4])).toThrowError(TypeError);
             expect(() => ArrayNums.divide([1, 2, -1], [3, 4])).toThrowError(RangeError);
+        });
+
+        it('should handle division of large numbers correctly', () => {
+            const result = ArrayNums.divide([8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 1], [9, 9, 9, 9, 9, 9, 9, 9, 9]);
+            expect(result).toEqual({ Quotient: [8, 8], Remainder: [8, 8, 8, 8, 8, 8, 8, 8, 9] });
+        });
+
+        it('should handle division of numbers with different lengths correctly', () => {
+            const result = ArrayNums.divide([9, 9, 9, 0, 0, 0], [1, 0, 0, 0]);
+            expect(result).toEqual({ Quotient: [9, 9, 9], Remainder: [0] });
+        });
+
+        it('should handle cases where the remainder is zero', () => {
+            const result = ArrayNums.divide([9, 9, 9], [3, 3, 3]);
+            expect(result).toEqual({ Quotient: [3], Remainder: [0] });
         });
     });
 });

@@ -125,6 +125,10 @@ class ArrayNums {
 	 * @returns {Array<Number>} the result of multiplication
 	 */
 	static __oneDigitMultiply(multiplicant, multiplier) {
+		// Handling case of multiplier being 0
+
+		if(multiplier === 0) return [0]
+
 		/**
 		 * @type {Number}
 		 * Carry of the previous multiplication
@@ -502,6 +506,7 @@ class ArrayNums {
 	 * @return {Array<Number>} inputNumber converted into ArrayNum
 	 */
 	static convertIntegerToArrayNum(inputNumber) {
+		if(inputNumber < 0) throw RangeError("Negative integers cannot be ArrayNums")
 		let outputArray = []
 		while (inputNumber > 0) {
 			outputArray.push(inputNumber % 10)
